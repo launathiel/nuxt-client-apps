@@ -17,8 +17,6 @@ export default {
   },
 
   env: {
-    postBaseUrl: process.env.POST_BASE_URL || 'posts-clusterip-srv.postsapp:4000',
-    commentBaseUrl: process.env.COMMENT_BASE_URL || 'comments-srv.postsapp:4001',
     postId: process.env.POST_ID || 'none'
   },
 
@@ -39,7 +37,13 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/proxy'
   ],
+
+  proxy: {
+    '/api/posts/v1': { target: process.env.POST_BASE_URL, pathRewrite: {'^/api/posts/v1': ''} },
+    '/api/comments/v1': { target: process.env.COMMENT_BASE_URL, pathRewrite: {'^/api/comments/v1': ''} },
+  },
 
   axios: {
     proxyHeaders: false,

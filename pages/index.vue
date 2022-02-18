@@ -2,14 +2,7 @@
 <div id="app">
   <h1>Posts Application</h1>
 
-  <section v-if="errored">
-    <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
-  </section>
-
-  <section v-else>
-    <div v-if="loading">Loading...</div>
-
-    <div v-else v-for="post in posts" class="post">
+    <div v-for="post in posts" class="post">
       {{ post.title }} with id = {{ post._id }}
 
       <div v-for="comment in comments">
@@ -17,8 +10,8 @@
         {{comment.content}}
       </div>
       <br>
+      <br>
     </div>
-  </section>
 </div>
 </template>
 
@@ -33,11 +26,11 @@ export default {
   },
   async mounted () {
     await axios
-      .get(process.env.postBaseUrl+'/posts/')
+      .get('api/posts/v1/posts/')
       .then(response => (this.posts = response.data.data))
 
     await axios
-      .get(process.env.commentBaseUrl+'/posts/'+process.env.postId+'/comments')
+      .get('api/comments/v1/posts/'+process.env.postId+'/comments')
       .then(res=>(this.comments = res.data.data))
   }
 };
